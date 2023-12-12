@@ -431,6 +431,7 @@ pub struct Position {
     pub is_auto_add_margin: bool,
     #[serde(with = "string_or_float")]
     pub isolated_margin: f64,
+    #[serde(with = "string_or_u64")]
     pub leverage: u64,
     #[serde(with = "string_or_float")]
     pub liquidation_price: f64,
@@ -449,6 +450,8 @@ pub struct Position {
     pub notional: f64,
     #[serde(with = "string_or_float")]
     pub isolated_wallet: f64,
+    #[serde(with = "string_or_float")]
+    pub break_even_price: f64,
 }
 
 // https://binance-docs.github.io/apidocs/futures/en/#account-information-v2-user_data
