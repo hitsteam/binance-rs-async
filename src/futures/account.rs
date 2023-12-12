@@ -195,8 +195,7 @@ impl FuturesAccount {
     }
 
     pub async fn position_information<S>(&self, symbol: Option<String>) -> Result<Vec<Position>> {
-        let parameters = BTreeMap::<String, String>::new();
-        let mut parameters = BTreeMap::new();
+        let mut parameters = BTreeMap::<String, String>::new();
         if let Some(symbol) = symbol {
             parameters.insert("symbol".into(), symbol);
         }
