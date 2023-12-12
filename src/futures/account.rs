@@ -194,14 +194,14 @@ impl FuturesAccount {
         self.client.delete_signed_p("/fapi/v1/order", &o, recv_window).await
     }
 
-    pub async fn position_information<S>(&self, symbol: Option<String>) -> Result<Vec<Position>> {
+    pub async fn position_information(&self, symbol: Option<String>) -> Result<Vec<Position>> {
         let mut parameters = BTreeMap::<String, String>::new();
         if let Some(symbol) = symbol {
             parameters.insert("symbol".into(), symbol);
         }
         let request = build_signed_request(parameters, self.recv_window)?;
         self.client
-            .get_signed("/fapi/v2/positionRisk", &request).await
+            .get_signed_d("/fapi/v2/positionRisk", &request).await
     }
 
     pub async fn account_information(&self) -> Result<AccountInformation> {
