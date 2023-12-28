@@ -677,6 +677,6 @@ pub struct AccountIncome {
     pub asset: String,
     pub info: String,
     pub time: u64,
-    pub tran_id: String,
-    pub trade_id: String,
+    pub tran_id: u64,
+    pub trade_id: u64,
 }
