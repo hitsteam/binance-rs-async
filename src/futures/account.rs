@@ -2,13 +2,13 @@ use std::collections::BTreeMap;
 
 use super::rest_model::{
     AccountBalance, AccountInformation, CanceledOrder, ChangeLeverageResponse, Order, OrderType, Position,
-    PositionSide, Transaction, WorkingType,
+    PositionSide, Transaction, WorkingType, AccountIncome,
 };
 use crate::account::OrderCancellation;
 use crate::client::Client;
 use crate::errors::*;
 use crate::rest_model::{OrderSide, TimeInForce};
-use crate::rest_model::{PairAndWindowQuery, PairQuery};
+use crate::rest_model::PairQuery;
 use crate::util::*;
 use serde::Serializer;
 use std::fmt;
@@ -214,6 +214,21 @@ impl FuturesAccount {
         let parameters = BTreeMap::<String, String>::new();
         let request = build_signed_request(parameters, self.recv_window)?;
         self.client.get_signed_d("/fapi/v2/balance", request.as_str()).await
+    }
+
+    pub async fn account_income(&self, start_time: Option<u64>, end_time: Option<u64>, limit: Option<u16>) -> Result<Vec<AccountIncome>> {
+        let mut parameters = BTreeMap::<String, String>::new();
+        if let Some(start_time) = start_time {
+            parameters.insert("startTime".into(), start_time.to_string());
+        }
+        if let Some(end_time) = end_time {
+            parameters.insert("endTime".into(), end_time.to_string());
+        }
+        if let Some(limit) = limit {
+            parameters.insert("limit".into(), limit.to_string());
+        }
+        let request = build_signed_request(parameters, self.recv_window)?;
+        self.client.get_signed_d("/fapi/v1/income", request.as_str()).await
     }
 
     pub async fn change_initial_leverage<S>(&self, symbol: S, leverage: u8) -> Result<ChangeLeverageResponse>

@@ -665,3 +665,18 @@ pub struct SymbolBrackets {
     pub symbol: String,
     pub brackets: Vec<LeverageBracket>,
 }
+
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct AccountIncome {
+    pub symbol: String,
+    pub income_type: String,
+    #[serde(with = "string_or_float")]
+    pub income: f64,
+    pub asset: String,
+    pub info: String,
+    pub time: u64,
+    pub tran_id: String,
+    pub trade_id: String,
+}
