@@ -216,7 +216,7 @@ impl FuturesAccount {
         self.client.get_signed_d("/fapi/v2/balance", request.as_str()).await
     }
 
-    pub async fn account_income(&self, start_time: Option<u64>, end_time: Option<u64>, limit: Option<u16>) -> Result<Vec<AccountIncome>> {
+    pub async fn account_income(&self, start_time: Option<i64>, end_time: Option<i64>, limit: Option<u16>) -> Result<Vec<AccountIncome>> {
         let mut parameters = BTreeMap::<String, String>::new();
         if let Some(start_time) = start_time {
             parameters.insert("startTime".into(), start_time.to_string());
