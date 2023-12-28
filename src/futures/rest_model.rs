@@ -676,7 +676,10 @@ pub struct AccountIncome {
     pub income: f64,
     pub asset: String,
     pub info: String,
+    #[serde(with = "string_or_u64")]
     pub time: u64,
-    pub tran_id: String,
+    #[serde(with = "string_or_u64")]
+    pub tran_id: u64,
+    #[serde(with = "string_or_u64")]
     pub trade_id: u64,
 }
