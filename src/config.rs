@@ -8,6 +8,9 @@ pub struct Config {
     pub futures_rest_api_endpoint: String,
     pub futures_ws_endpoint: String,
 
+    pub delivery_rest_api_endpoint: String,
+    pub delivery_ws_endpoint: String,
+
     pub recv_window: u64,
 
     pub binance_us_api: bool,
@@ -110,6 +113,47 @@ impl Config {
         self
     }
 
+        /// Sets the delivery rest api endpoint. Defaults to <https://dapi.binance.com>.
+    ///
+    /// # Arguments
+    ///
+    /// * `delivery_rest_api_endpoint`:
+    ///
+    /// returns: Config
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use binance::config::Config;
+    /// let config = Config::default();
+    /// config.set_delivery_rest_api_endpoint("http://myendpoint:8080");
+    /// ```
+    pub fn set_delivery_rest_api_endpoint<T: Into<String>>(mut self, rest_api_endpoint: T) -> Self {
+        self.delivery_rest_api_endpoint = rest_api_endpoint.into();
+        self
+    }
+
+    /// Sets the delivery websocket endpoint. Defaults to "wss://dstream.binance.com".
+    ///
+    /// # Arguments
+    ///
+    /// * `delivery_ws_endpoint`:
+    ///
+    /// returns: Config
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use binance::config::Config;
+    /// let config = Config::default();
+    /// config.set_delivery_ws_endpoint("ws://myendpoint:8080");
+    /// ```
+    pub fn set_delivery_ws_endpoint<T: Into<String>>(mut self, ws_endpoint: T) -> Self {
+        self.delivery_ws_endpoint = ws_endpoint.into();
+        self
+    }
+
+
     /// Sets the 'receive window'. The receive window is the number of milliseconds after timestamp
     /// the request is valid for.
     ///
@@ -166,6 +210,9 @@ impl Default for Config {
 
             futures_rest_api_endpoint: "https://fapi.binance.com".into(),
             futures_ws_endpoint: "wss://fstream.binance.com".into(),
+
+            delivery_rest_api_endpoint: "https://dapi.binance.com".into(),
+            delivery_ws_endpoint: "wss://dstream.binance.com".into(),
 
             recv_window: 5000,
             binance_us_api: false,

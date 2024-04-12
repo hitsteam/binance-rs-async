@@ -80,6 +80,8 @@ pub mod api;
 pub mod config;
 #[cfg(feature = "futures_api")]
 pub mod futures;
+#[cfg(feature = "delivery_api")]
+pub mod delivery;
 pub mod general;
 #[cfg(feature = "margin_api")]
 pub mod margin;
