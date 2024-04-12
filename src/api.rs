@@ -131,3 +131,47 @@ impl Binance for crate::wallet::Wallet {
         }
     }
 }
+
+#[cfg(feature = "delivery_api")]
+impl Binance for crate::delivery::general::DeliveryGeneral {
+    fn new_with_config(api_key: Option<String>, secret_key: Option<String>, config: &Config) -> Self {
+        Self {
+            client: Client::new(
+                api_key,
+                secret_key,
+                config.futures_rest_api_endpoint.clone(),
+                config.timeout,
+            ),
+        }
+    }
+}
+
+#[cfg(feature = "futures_api")]
+impl Binance for crate::delivery::market::DeliveryMarket {
+    fn new_with_config(api_key: Option<String>, secret_key: Option<String>, config: &Config) -> Self {
+        Self {
+            client: Client::new(
+                api_key,
+                secret_key,
+                config.futures_rest_api_endpoint.clone(),
+                config.timeout,
+            ),
+            recv_window: config.recv_window,
+        }
+    }
+}
+
+#[cfg(feature = "futures_api")]
+impl Binance for crate::delivery::account::DeliveryAccount {
+    fn new_with_config(api_key: Option<String>, secret_key: Option<String>, config: &Config) -> Self {
+        Self {
+            client: Client::new(
+                api_key,
+                secret_key,
+                config.futures_rest_api_endpoint.clone(),
+                config.timeout,
+            ),
+            recv_window: config.recv_window,
+        }
+    }
+}
