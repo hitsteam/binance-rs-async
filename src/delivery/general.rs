@@ -4,11 +4,11 @@ use crate::futures::rest_model::*;
 use crate::rest_model::ServerTime;
 
 #[derive(Clone)]
-pub struct FuturesGeneral {
+pub struct DeliveryGeneral {
     pub client: Client,
 }
 
-impl FuturesGeneral {
+impl DeliveryGeneral {
     // Test connectivity
     pub async fn ping(&self) -> Result<String> {
         self.client.get("/fapi/v1/ping", None).await?;

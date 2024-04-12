@@ -12,12 +12,12 @@ use serde_json::Value;
 //TODO : make limit optional where applicable
 
 #[derive(Clone)]
-pub struct FuturesMarket {
+pub struct DeliveryMarket {
     pub client: Client,
     pub recv_window: u64,
 }
 
-impl FuturesMarket {
+impl DeliveryMarket {
     // Order book (Default 100; max 1000)
     pub async fn get_depth<S>(&self, symbol: S) -> Result<OrderBook>
     where

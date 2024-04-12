@@ -14,7 +14,7 @@ use serde::Serializer;
 use std::fmt;
 
 #[derive(Clone)]
-pub struct FuturesAccount {
+pub struct DeliveryAccount {
     pub client: Client,
     pub recv_window: u64,
 }
@@ -70,7 +70,7 @@ struct ChangePositionModeRequest {
     pub dual_side_position: bool,
 }
 
-impl FuturesAccount {
+impl DeliveryAccount {
     pub async fn place_order(&self, order: OrderRequest) -> Result<Transaction> {
         self.client
             .post_signed_p("/dapi/v1/order", order, self.recv_window)
