@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use super::rest_model::{
     AccountBalance, AccountInformation, CanceledOrder, ChangeLeverageResponse, Order, OrderType, Position,
-    PositionSide, Transaction, WorkingType, AccountIncome,
+    PositionSide, Transaction, WorkingType, AccountIncome, PositionSideResponse
 };
 use crate::account::OrderCancellation;
 use crate::client::Client;
@@ -192,6 +192,12 @@ impl FuturesAccount {
     pub async fn cancel_order(&self, o: OrderCancellation) -> Result<CanceledOrder> {
         let recv_window = o.recv_window.unwrap_or(self.recv_window);
         self.client.delete_signed_p("/fapi/v1/order", &o, recv_window).await
+    }
+
+    pub async fn get_position_side(&self) -> Result<PositionSideResponse> {
+        let parameters = BTreeMap::<String, String>::new();
+        let request = build_signed_request(parameters, self.recv_window)?;
+        self.client.get_signed_d("/fapi/v1/positionSide/dual", &request).await
     }
 
     pub async fn position_information(&self, symbol: Option<String>) -> Result<Vec<Position>> {
