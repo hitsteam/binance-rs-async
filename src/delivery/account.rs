@@ -82,6 +82,25 @@ impl DeliveryAccount {
         self.client.get_signed("/dapi/v1/openOrders", &payload).await
     }
 
+    pub async fn get_order<S, F, N>(&self, symbol: S, order_id: F, orig_client_order_id: N) -> Result<Order>
+    where
+        S: Into<String>,
+        F: Into<Option<u64>>,
+        N: Into<Option<String>>,
+    {
+        let mut parameters: BTreeMap<String, String> = BTreeMap::new();
+        parameters.insert("symbol".into(), symbol.into());
+        if let Some(order_id) = order_id.into() {
+            parameters.insert("orderId".into(), order_id.to_string());
+        }
+        if let Some(orig_client_order_id) = orig_client_order_id.into() {
+            parameters.insert("origClientOrderId".into(), orig_client_order_id.to_string());
+        }
+
+        let request = build_signed_request(parameters, self.recv_window)?;
+        self.client.get_signed_d("/dapi/v1/order", &request).await
+    }
+
     pub async fn limit_buy(
         &self,
         symbol: impl Into<String>,

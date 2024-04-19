@@ -1,14 +1,14 @@
 use std::collections::BTreeMap;
 
 use super::rest_model::{
-    AccountBalance, AccountInformation, CanceledOrder, ChangeLeverageResponse, Order, OrderType, Position,
-    PositionSide, Transaction, WorkingType, AccountIncome, PositionSideResponse
+    AccountBalance, AccountIncome, AccountInformation, CanceledOrder, ChangeLeverageResponse, Order, OrderType,
+    Position, PositionSide, PositionSideResponse, Transaction, WorkingType,
 };
 use crate::account::OrderCancellation;
 use crate::client::Client;
 use crate::errors::*;
-use crate::rest_model::{OrderSide, TimeInForce};
 use crate::rest_model::PairQuery;
+use crate::rest_model::{OrderSide, TimeInForce};
 use crate::util::*;
 use serde::Serializer;
 use std::fmt;
@@ -80,6 +80,25 @@ impl FuturesAccount {
     pub async fn get_open_orders(&self, symbol: impl Into<String>) -> Result<Vec<Order>> {
         let payload = build_signed_request_p([("symbol", symbol.into())], self.recv_window)?;
         self.client.get_signed("/fapi/v1/openOrders", &payload).await
+    }
+
+    pub async fn get_order<S, F, N>(&self, symbol: S, order_id: F, orig_client_order_id: N) -> Result<Order>
+    where
+        S: Into<String>,
+        F: Into<Option<u64>>,
+        N: Into<Option<String>>,
+    {
+        let mut parameters: BTreeMap<String, String> = BTreeMap::new();
+        parameters.insert("symbol".into(), symbol.into());
+        if let Some(order_id) = order_id.into() {
+            parameters.insert("orderId".into(), order_id.to_string());
+        }
+        if let Some(orig_client_order_id) = orig_client_order_id.into() {
+            parameters.insert("origClientOrderId".into(), orig_client_order_id.to_string());
+        }
+
+        let request = build_signed_request(parameters, self.recv_window)?;
+        self.client.get_signed_d("/fapi/v1/order", &request).await
     }
 
     pub async fn limit_buy(
@@ -206,8 +225,7 @@ impl FuturesAccount {
             parameters.insert("symbol".into(), symbol);
         }
         let request = build_signed_request(parameters, self.recv_window)?;
-        self.client
-            .get_signed_d("/fapi/v2/positionRisk", &request).await
+        self.client.get_signed_d("/fapi/v2/positionRisk", &request).await
     }
 
     pub async fn account_information(&self) -> Result<AccountInformation> {
@@ -222,7 +240,12 @@ impl FuturesAccount {
         self.client.get_signed_d("/fapi/v2/balance", request.as_str()).await
     }
 
-    pub async fn account_income(&self, start_time: Option<i64>, end_time: Option<i64>, limit: Option<u16>) -> Result<Vec<AccountIncome>> {
+    pub async fn account_income(
+        &self,
+        start_time: Option<i64>,
+        end_time: Option<i64>,
+        limit: Option<u16>,
+    ) -> Result<Vec<AccountIncome>> {
         let mut parameters = BTreeMap::<String, String>::new();
         if let Some(start_time) = start_time {
             parameters.insert("startTime".into(), start_time.to_string());
