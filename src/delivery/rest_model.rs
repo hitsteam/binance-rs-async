@@ -35,7 +35,8 @@ pub struct Symbol {
     pub contract_type: ContractType,
     pub delivery_date: u64,
     pub onboard_date: u64,
-    pub contractStatus: SymbolStatus,
+    pub contract_status: SymbolStatus,
+    pub contract_size: u64,
     #[serde(with = "string_or_float")]
     pub maint_margin_percent: f64,
     #[serde(with = "string_or_float")]
