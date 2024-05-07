@@ -11,10 +11,8 @@ pub use crate::rest_model::{
 pub struct ExchangeInformation {
     pub timezone: String,
     pub server_time: u64,
-    pub futures_type: String,
     pub rate_limits: Vec<RateLimit>,
     pub exchange_filters: Vec<Filters>,
-    pub assets: Vec<AssetDetail>,
     pub symbols: Vec<Symbol>,
 }
 
