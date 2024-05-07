@@ -12,7 +12,7 @@ pub struct ExchangeInformation {
     pub timezone: String,
     pub server_time: u64,
     pub rate_limits: Vec<RateLimit>,
-    pub exchange_filters: Vec<Filters>,
+    pub exchange_filters: Vec<String>,
     pub symbols: Vec<Symbol>,
 }
 
