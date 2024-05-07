@@ -24,7 +24,7 @@ impl DeliveryMarket {
         S: Into<String>,
     {
         self.client
-            .get_d("/fapi/v1/depth", Some(PairQuery { symbol: symbol.into() }))
+            .get_d("/dapi/v1/depth", Some(PairQuery { symbol: symbol.into() }))
             .await
     }
 
@@ -34,7 +34,7 @@ impl DeliveryMarket {
         S: Into<String>,
     {
         self.client
-            .get_d("/fapi/v1/trades", Some(PairQuery { symbol: symbol.into() }))
+            .get_d("/dapi/v1/trades", Some(PairQuery { symbol: symbol.into() }))
             .await
     }
 
@@ -47,7 +47,7 @@ impl DeliveryMarket {
     {
         self.client
             .get_signed_p(
-                "/fapi/v1/historicalTrades",
+                "/dapi/v1/historicalTrades",
                 Some(HistoryQuery {
                     start_time: None,
                     end_time: None,
@@ -80,7 +80,7 @@ impl DeliveryMarket {
     {
         self.client
             .get_signed_p(
-                "/fapi/v1/aggTrades",
+                "/dapi/v1/aggTrades",
                 Some(HistoryQuery {
                     start_time: start_time.into(),
                     end_time: end_time.into(),
@@ -111,7 +111,7 @@ impl DeliveryMarket {
     {
         self.client
             .get_signed_p(
-                "/fapi/v1/fundingRate",
+                "/dapi/v1/fundingRate",
                 Some(HistoryQuery {
                     start_time: start_time.into(),
                     end_time: end_time.into(),
@@ -311,7 +311,7 @@ impl DeliveryMarket {
             from_id: None,
             period: None,
         };
-        let data: Vec<Vec<Value>> = self.client.get_d("/fapi/v1/klines", Some(query)).await?;
+        let data: Vec<Vec<Value>> = self.client.get_d("/dapi/v1/klines", Some(query)).await?;
 
         let klines = KlineSummaries::AllKlineSummaries(
             data.iter()
@@ -362,7 +362,7 @@ impl DeliveryMarket {
             from_id: None,
             period: None,
         };
-        let klines = self.client.get_d("/fapi/v1/lvtKlines", Some(query)).await?;
+        let klines = self.client.get_d("/dapi/v1/lvtKlines", Some(query)).await?;
 
         Ok(klines)
     }
@@ -395,7 +395,7 @@ impl DeliveryMarket {
             from_id: None,
             period: None,
         };
-        let klines = self.client.get_d("/fapi/v1/markPriceKlines", Some(query)).await?;
+        let klines = self.client.get_d("/dapi/v1/markPriceKlines", Some(query)).await?;
 
         Ok(klines)
     }
@@ -429,7 +429,7 @@ impl DeliveryMarket {
             period: None,
         };
 
-        let klines = self.client.get_d("/fapi/v1/indexPriceKlines", Some(query)).await?;
+        let klines = self.client.get_d("/dapi/v1/indexPriceKlines", Some(query)).await?;
 
         Ok(klines)
     }
@@ -462,7 +462,7 @@ impl DeliveryMarket {
             from_id: None,
             period: None,
         };
-        let klines = self.client.get_d("/fapi/v1/continuousKlines", Some(query)).await?;
+        let klines = self.client.get_d("/dapi/v1/continuousKlines", Some(query)).await?;
 
         Ok(klines)
     }
@@ -477,7 +477,7 @@ impl DeliveryMarket {
             recv_window: self.recv_window,
         };
         self.client
-            .get_signed_p("/fapi/v1/leverageBracket", Some(p), self.recv_window)
+            .get_signed_p("/dapi/v1/leverageBracket", Some(p), self.recv_window)
             .await
     }
 
@@ -488,7 +488,7 @@ impl DeliveryMarket {
         S: Into<String>,
     {
         let p = symbol.map(|s| PairQuery { symbol: s.into() });
-        self.client.get_d("/fapi/v1/indexInfo", p).await
+        self.client.get_d("/dapi/v1/indexInfo", p).await
     }
 
     /// 24hr ticker price change statistics
@@ -497,13 +497,13 @@ impl DeliveryMarket {
         S: Into<String>,
     {
         self.client
-            .get_d("/fapi/v1/ticker/24hr", Some(PairQuery { symbol: symbol.into() }))
+            .get_d("/dapi/v1/ticker/24hr", Some(PairQuery { symbol: symbol.into() }))
             .await
     }
 
     /// 24hr ticker price change statistics for all symbols
     pub async fn get_all_24h_price_stats(&self) -> Result<Vec<PriceStats>> {
-        self.client.get_p("/fapi/v1/ticker/24hr", None).await
+        self.client.get_p("/dapi/v1/ticker/24hr", None).await
     }
 
     /// Latest price for ONE symbol.
@@ -512,14 +512,14 @@ impl DeliveryMarket {
         S: Into<String>,
     {
         self.client
-            .get_d("/fapi/v1/ticker/price", Some(PairQuery { symbol: symbol.into() }))
+            .get_d("/dapi/v1/ticker/price", Some(PairQuery { symbol: symbol.into() }))
             .await
     }
 
     /// Symbols order book ticker
     /// -> Best price/qty on the order book for ALL symbols.
     pub async fn get_all_book_tickers(&self) -> Result<BookTickers> {
-        self.client.get_p("/fapi/v1/ticker/bookTicker", None).await
+        self.client.get_p("/dapi/v1/ticker/bookTicker", None).await
     }
 
     // -> Best price/qty on the order book for ONE symbol
@@ -528,7 +528,7 @@ impl DeliveryMarket {
         S: Into<String>,
     {
         self.client
-            .get_d("/fapi/v1/ticker/bookTicker", Some(PairQuery { symbol: symbol.into() }))
+            .get_d("/dapi/v1/ticker/bookTicker", Some(PairQuery { symbol: symbol.into() }))
             .await
     }
 
@@ -536,16 +536,16 @@ impl DeliveryMarket {
         if let Some(symbol) = symbol {
             Ok(vec![
                 self.client
-                    .get_d::<MarkPrice, PairQuery>("/fapi/v1/premiumIndex", Some(PairQuery { symbol }))
+                    .get_d::<MarkPrice, PairQuery>("/dapi/v1/premiumIndex", Some(PairQuery { symbol }))
                     .await?,
             ])
         } else {
-            self.client.get_p("/fapi/v1/premiumIndex", None).await
+            self.client.get_p("/dapi/v1/premiumIndex", None).await
         }
     }
 
     pub async fn get_all_liquidation_orders(&self) -> Result<LiquidationOrders> {
-        self.client.get_p("/fapi/v1/allForceOrders", None).await
+        self.client.get_p("/dapi/v1/allForceOrders", None).await
     }
 
     pub async fn open_interest<S>(&self, symbol: S) -> Result<OpenInterest>
@@ -553,7 +553,7 @@ impl DeliveryMarket {
         S: Into<String>,
     {
         self.client
-            .get_d("/fapi/v1/openInterest", Some(PairQuery { symbol: symbol.into() }))
+            .get_d("/dapi/v1/openInterest", Some(PairQuery { symbol: symbol.into() }))
             .await
     }
 }

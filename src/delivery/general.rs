@@ -11,19 +11,19 @@ pub struct DeliveryGeneral {
 impl DeliveryGeneral {
     // Test connectivity
     pub async fn ping(&self) -> Result<String> {
-        self.client.get("/fapi/v1/ping", None).await?;
+        self.client.get("/dapi/v1/ping", None).await?;
         Ok("pong".into())
     }
 
     // Check server time
     pub async fn get_server_time(&self) -> Result<ServerTime> {
-        self.client.get_p("/fapi/v1/time", None).await
+        self.client.get_p("/dapi/v1/time", None).await
     }
 
     // Obtain exchange information
     // - Current exchange trading rules and symbol information
     pub async fn exchange_info(&self) -> Result<ExchangeInformation> {
-        self.client.get_p("/fapi/v1/exchangeInfo", None).await
+        self.client.get_p("/dapi/v1/exchangeInfo", None).await
     }
 
     // Get Symbol information
