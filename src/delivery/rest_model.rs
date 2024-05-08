@@ -552,7 +552,7 @@ pub struct AccountBalance {
 #[serde(rename_all = "camelCase")]
 pub struct ChangeLeverageResponse {
     pub leverage: u8,
-    #[serde(with = "string_or_float")]
+    #[serde(with = "string_or_float", rename = "maxQty")]    
     pub max_notional_value: f64,
     pub symbol: String,
 }
