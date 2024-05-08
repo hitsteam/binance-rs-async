@@ -22,6 +22,15 @@ impl FuturesGeneral {
 
     // Obtain exchange information
     // - Current exchange trading rules and symbol information
+        /// Obtain exchange information (rate limits, symbol metadata etc)
+    /// # Examples
+    /// ```rust
+    /// use binance::{api::*, general::*, config::*};
+    /// let conf = Config::default().set_rest_api_endpoint(DATA_REST_ENDPOINT);
+    /// let general: General = Binance::new_with_env(&conf);
+    /// let exchange_info = tokio_test::block_on(general.exchange_info());
+    /// assert!(exchange_info.is_ok(), "{:?}", exchange_info);
+    /// ```  
     pub async fn exchange_info(&self) -> Result<ExchangeInformation> {
         self.client.get_p("/fapi/v1/exchangeInfo", None).await
     }

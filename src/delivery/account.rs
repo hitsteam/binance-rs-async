@@ -216,7 +216,7 @@ impl DeliveryAccount {
     pub async fn get_position_side(&self) -> Result<PositionSideResponse> {
         let parameters = BTreeMap::<String, String>::new();
         let request = build_signed_request(parameters, self.recv_window)?;
-        self.client.get_signed_d("/fapi/v1/positionSide/dual", &request).await
+        self.client.get_signed_d("/dapi/v1/positionSide/dual", &request).await
     }
 
     pub async fn position_information(&self, symbol: Option<String>) -> Result<Vec<Position>> {
