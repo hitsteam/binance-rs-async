@@ -30,7 +30,7 @@ pub struct AssetDetail {
 pub struct Symbol {
     pub symbol: String,
     pub pair: String,
-    pub contract_type: ContractType,
+    pub contract_type: String,
     pub delivery_date: u64,
     pub onboard_date: u64,
     pub contract_status: SymbolStatus,
@@ -52,18 +52,6 @@ pub struct Symbol {
     pub filters: Vec<Filters>,
     pub order_types: Vec<OrderType>,
     pub time_in_force: Vec<TimeInForce>,
-}
-
-#[derive(Debug, Deserialize, Serialize, Clone)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum ContractType {
-    Perpetual,
-    CurrentMonth,
-    NextMonth,
-    CurrentQuarter,
-    NextQuarter,
-    #[serde(rename = "")]
-    Empty,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]

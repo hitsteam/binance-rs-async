@@ -55,3 +55,48 @@ impl FuturesGeneral {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use std::env::var;
+
+    use crate::{api::Binance, config::*};
+
+    use super::FuturesGeneral;
+
+    async fn test_futures_general() -> FuturesGeneral {
+        let api_key = Some(var("BINANCE_KEY").unwrap().to_string());
+        let secret_key = Some(var("BINANCE_SECRET").unwrap().to_string());
+        let conf = Config::default().set_rest_api_endpoint(DATA_REST_ENDPOINT);
+        let general: FuturesGeneral = Binance::new_with_config(api_key, secret_key, &conf);
+        general
+    }
+
+    #[tokio::test]
+    async fn test_ping() {
+        let general = test_futures_general().await;
+        let ping = general.ping().await;
+        assert!(ping.is_ok(), "{:?}", ping);
+    }
+
+    #[tokio::test]
+    async fn test_get_server_time() {
+        let general = test_futures_general().await;
+        let server_time = general.get_server_time().await;
+        assert!(server_time.is_ok(), "{:?}", server_time);
+    }
+
+    #[tokio::test]
+    async fn test_exchange_info() {
+        let general = test_futures_general().await;
+        let exchange_info = general.exchange_info().await;
+        assert!(exchange_info.is_ok(), "{:?}", exchange_info);
+    }
+
+    #[tokio::test]
+    async fn test_get_symbol_info() {
+        let general = test_futures_general().await;
+        let symbol_info = general.get_symbol_info("BTCUSDT").await;
+        assert!(symbol_info.is_ok(), "{:?}", symbol_info);
+    }
+}
