@@ -416,34 +416,33 @@ pub struct PositionSideResponse {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Position {
+    pub symbol: String,
+    #[serde(with = "string_or_float", rename = "positionAmt")]
+    pub position_amount: f64,
     #[serde(with = "string_or_float")]
     pub entry_price: f64,
-    pub margin_type: MarginType,
-    #[serde(with = "string_or_bool")]
-    pub is_auto_add_margin: bool,
     #[serde(with = "string_or_float")]
-    pub isolated_margin: f64,
+    pub break_even_price: f64,
+    #[serde(with = "string_or_float")]
+    pub mark_price: f64,
+    #[serde(with = "string_or_float", rename = "unRealizedProfit")]
+    pub unrealized_profit: f64,
+    #[serde(with = "string_or_float")]
+    pub liquidation_price: f64,
     #[serde(with = "string_or_u64")]
     pub leverage: u64,
     #[serde(with = "string_or_float")]
-    pub liquidation_price: f64,
+    pub max_qty: f64,
+    pub margin_type: MarginType,
     #[serde(with = "string_or_float")]
-    pub mark_price: f64,
-    #[serde(with = "string_or_float")]
-    pub max_notional_value: f64,
-    #[serde(with = "string_or_float", rename = "positionAmt")]
-    pub position_amount: f64,
-    pub symbol: String,
-    #[serde(with = "string_or_float", rename = "unRealizedProfit")]
-    pub unrealized_profit: f64,
+    pub isolated_margin: f64,
+    #[serde(with = "string_or_bool")]
+    pub is_auto_add_margin: bool,
     pub position_side: PositionSide,
+    #[serde(with = "string_or_float")]
+    pub notional_value: f64,
     pub update_time: u64,
-    #[serde(with = "string_or_float")]
-    pub notional: f64,
-    #[serde(with = "string_or_float")]
-    pub isolated_wallet: f64,
-    #[serde(with = "string_or_float")]
-    pub break_even_price: f64,
+
 }
 
 // https://binance-docs.github.io/apidocs/futures/en/#account-information-v2-user_data
