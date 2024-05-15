@@ -222,7 +222,7 @@ impl DeliveryAccount {
     pub async fn position_information(&self, symbol: Option<String>) -> Result<Vec<Position>> {
         let mut parameters = BTreeMap::<String, String>::new();
         if let Some(symbol) = symbol {
-            parameters.insert("symbol".into(), symbol);
+            parameters.insert("pair".into(), symbol);
         }
         let request = build_signed_request(parameters, self.recv_window)?;
         self.client
