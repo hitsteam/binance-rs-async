@@ -471,6 +471,7 @@ pub struct AccountPosition {
     pub position_amount: f64,
     #[serde(with = "string_or_float")]
     pub break_even_price: f64,
+    #[serde(with = "string_or_u64")]
     pub max_qty: u64,
 
     pub update_time: u64,
