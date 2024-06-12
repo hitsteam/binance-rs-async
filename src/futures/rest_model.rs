@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use serde::{Deserialize, Serialize};
 
 use crate::rest_model::{string_or_bool, string_or_float, string_or_float_opt, string_or_u64};
@@ -94,6 +96,25 @@ pub enum WorkingType {
 pub enum MarginType {
     Isolated,
     Cross,
+}
+
+impl From<&str> for MarginType {
+    fn from(s: &str) -> Self {
+        match s {
+            "Isolated" => MarginType::Isolated,
+            "Cross" => MarginType::Cross,
+            _ => panic!("Invalid margin type"),
+        }
+    }
+}
+
+impl Display for MarginType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            MarginType::Isolated => write!(f, "Isolated"),
+            MarginType::Cross => write!(f, "Cross"),
+        }
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
