@@ -83,6 +83,28 @@ pub enum PositionSide {
     Short,
 }
 
+impl From<&str> for PositionSide {
+    fn from(s: &str) -> Self {
+        match s {
+            "Both" => PositionSide::Both,
+            "Long" => PositionSide::Long,
+            "Short" => PositionSide::Short,
+            _ => panic!("Invalid position side"),
+        }
+    }
+}
+
+impl Display for PositionSide {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            PositionSide::Both => write!(f, "Both"),
+            PositionSide::Long => write!(f, "Long"),
+            PositionSide::Short => write!(f, "Short"),
+        }
+    }
+}
+
+
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum WorkingType {
