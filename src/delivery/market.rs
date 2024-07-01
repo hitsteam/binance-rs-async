@@ -507,7 +507,7 @@ impl DeliveryMarket {
     }
 
     /// Latest price for ONE symbol.
-    pub async fn get_price<S>(&self, symbol: S) -> Result<SymbolPrice>
+    pub async fn get_price<S>(&self, symbol: S) -> Result<Vec<SymbolPrice>>
     where
         S: Into<String>,
     {
