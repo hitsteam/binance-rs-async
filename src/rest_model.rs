@@ -321,8 +321,10 @@ pub enum Prices {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct SymbolPrice {
     pub symbol: String,
+    pub ps: String,
     #[serde(with = "string_or_float")]
     pub price: f64,
+    pub time: u64,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
