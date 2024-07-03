@@ -492,7 +492,7 @@ impl DeliveryMarket {
     }
 
     /// 24hr ticker price change statistics
-    pub async fn get_24h_price_stats<S>(&self, symbol: S) -> Result<PriceStats>
+    pub async fn get_24h_price_stats<S>(&self, symbol: S) -> Result<Vec<PriceStats>>
     where
         S: Into<String>,
     {
