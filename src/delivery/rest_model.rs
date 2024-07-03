@@ -212,6 +212,7 @@ pub struct OrderBook {
 #[serde(rename_all = "camelCase")]
 pub struct PriceStats {
     pub symbol: String,
+    pub pair: String,
     pub price_change: String,
     pub price_change_percent: String,
     pub weighted_avg_price: String,
@@ -225,7 +226,7 @@ pub struct PriceStats {
     pub low_price: f64,
     #[serde(with = "string_or_float")]
     pub volume: f64,
-    #[serde(with = "string_or_float")]
+    #[serde(with = "string_or_float", alias="baseVolume")]
     pub quote_volume: f64,
     #[serde(with = "string_or_float")]
     pub last_qty: f64,
