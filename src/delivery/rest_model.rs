@@ -213,9 +213,12 @@ pub struct OrderBook {
 pub struct PriceStats {
     pub symbol: String,
     pub pair: String,
-    pub price_change: String,
-    pub price_change_percent: String,
-    pub weighted_avg_price: String,
+    #[serde(with = "string_or_float")]
+    pub price_change: f64,
+    #[serde(with = "string_or_float")]
+    pub price_change_percent: f64,
+    #[serde(with = "string_or_float")]
+    pub weighted_avg_price: f64,
     #[serde(with = "string_or_float")]
     pub last_price: f64,
     #[serde(with = "string_or_float")]
